@@ -1,0 +1,9 @@
+{
+	"name": "paylike-processing-errors",
+	"private": true,
+	"version": "0.0.1",
+	"dependencies": {
+		"index-by": "^0.0.1",
+		"object-assign": "^4.1.0"
+	}
+}
