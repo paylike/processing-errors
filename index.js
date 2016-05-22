@@ -95,6 +95,18 @@ var errors = [
 		client: true,
 		merchant: true,
 	},
+	{
+		code: 30,
+		text: '3-D Secure is required',
+		client: true,
+		merchant: false,
+	},
+	{
+		code: 31,
+		text: '3-D Secure failed',
+		client: true,
+		merchant: false,
+	},
 
 	{
 		code: 13,
