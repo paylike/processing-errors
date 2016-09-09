@@ -70,6 +70,12 @@ var errors = [
 		client: true,
 		merchant: false,
 	},
+	{
+		code: 29,
+		text: 'Invalid card number or card not supported',
+		client: true,
+		merchant: false,
+	},
 
 	{
 		code: 15,
