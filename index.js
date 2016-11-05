@@ -1,214 +1,204 @@
 'use strict'
 
-var indexBy = require('index-by');
-var assign = require('object-assign');
-
 var errors = [
 	{
 		code: 2,
-		text: 'Invalid card details',
+		message: 'Invalid card details',
 		client: true,
 		merchant: false,
 	},
 	{
 		code: 3,
-		text: 'Invalid card number',
+		message: 'Invalid card number',
 		client: true,
 		merchant: false,
 	},
 	{
 		code: 4,
-		text: 'Invalid security code (CSC)',
+		message: 'Invalid security code (CSC)',
 		client: true,
 		merchant: false,
 	},
 	{
 		code: 5,
-		text: 'Invalid expire date',
+		message: 'Invalid expire date',
 		client: true,
 		merchant: false,
 	},
 	{
 		code: 6,
-		text: 'Card expired',
+		message: 'Card expired',
 		client: true,
 		merchant: false,
 	},
 	{
 		code: 7,
-		text: 'Insufficient funds',
+		message: 'Insufficient funds',
 		client: true,
 		merchant: false,
 	},
 	{
 		code: 17,
-		text: 'Missing card number',
+		message: 'Missing card number',
 		client: true,
 		merchant: false,
 	},
 	{
 		code: 18,
-		text: 'Missing card expiry month',
+		message: 'Missing card expiry month',
 		client: true,
 		merchant: false,
 	},
 	{
 		code: 19,
-		text: 'Missing card expiry year',
+		message: 'Missing card expiry year',
 		client: true,
 		merchant: false,
 	},
 	{
 		code: 20,
-		text: 'Missing card security code (CSC)',
+		message: 'Missing card security code (CSC)',
 		client: true,
 		merchant: false,
 	},
 	{
 		code: 25,
-		text: 'Card amount limit exceeded',
+		message: 'Card amount limit exceeded',
 		client: true,
 		merchant: false,
 	},
 	{
 		code: 29,
-		text: 'Invalid card number or card not supported',
+		message: 'Invalid card number or card not supported',
 		client: true,
 		merchant: false,
 	},
 
 	{
 		code: 15,
-		text: 'Missing amount',
+		message: 'Missing amount',
 		client: true,
 		merchant: true,
 	},
 	{
 		code: 14,
-		text: 'Invalid amount',
+		message: 'Invalid amount',
 		client: true,
 		merchant: true,
 	},
 	{
 		code: 16,
-		text: 'Missing currency',
+		message: 'Missing currency',
 		client: true,
 		merchant: true,
 	},
 	{
 		code: 1,
-		text: 'Invalid currency',
+		message: 'Invalid currency',
 		client: true,
 		merchant: true,
 	},
 	{
 		code: 30,
-		text: '3-D Secure is required',
+		message: '3-D Secure is required',
 		client: true,
 		merchant: false,
 	},
 	{
 		code: 31,
-		text: '3-D Secure failed',
+		message: '3-D Secure failed',
 		client: true,
 		merchant: false,
 	},
 
 	{
 		code: 13,
-		text: 'Invalid descriptor',
+		message: 'Invalid descriptor',
 		client: false,
 		merchant: true,
 	},
 	{
 		code: 21,
-		text: 'Missing secure connection (https)',
+		message: 'Missing secure connection (https)',
 		client: false,
 		merchant: true,
 	},
 	{
 		code: 22,
-		text: 'Amount is bigger than allowed, please contact us',
+		message: 'Amount is bigger than allowed, please contact us',
 		client: false,
 		merchant: true,
 	},
 	{
 		code: 26,
-		text: 'Invalid merchant public key, please contact us',
+		message: 'Invalid merchant public key, please contact us',
 		client: false,
 		merchant: true,
 	},
 	{
 		code: 27,
-		text: 'The merchant is not allowed to create transactions',
+		message: 'The merchant is not allowed to create transactions',
 		client: false,
 		merchant: true,
 	},
 	{
 		code: 28,
-		text: 'The merchant is not allowed to save cards',
+		message: 'The merchant is not allowed to save cards',
 		client: false,
 		merchant: true,
 	},
 
 	{
 		code: 8,
-		text: 'Declined by cardholder bank',
+		message: 'Declined by cardholder bank',
 		client: true,
 		merchant: false,
 	},
 	{
 		code: 9,
-		text: 'Card restricted',
+		message: 'Card restricted',
 		client: true,
 		merchant: false,
 	},
 	{
 		code: 10,
-		text: 'Card rejected',
+		message: 'Card rejected',
 		client: true,
 		merchant: false,
 	},
 	{
 		code: 11,
-		text: 'Transaction rejected',
+		message: 'Transaction rejected',
 		client: true,
 		merchant: true,
 	},
 	{
 		code: 12,
-		text: 'Error, please try again or contact us',
+		message: 'Error, please try again or contact us',
 		client: true,
 		merchant: true,
 	},
 ];
 
 errors.Error = ProcessingError;
-errors.byCode = findByCode;
-
-var indexByCode = null;
 
 module.exports = errors;
 
-function findByCode( code ){
-	if (indexByCode === null)
-		indexByCode = indexBy(errors, 'code');
-
-	return indexByCode[code];
-}
-
-
 function ProcessingError( code, opts ){
-	var description = findByCode(code);
+	var blueprint = errors.find(function( bp ){
+		return bp.code === code;
+	});
 
-	this.code = description.code;
-	this.text = description.text;
-	this.message = description.text;
+	if (!blueprint)
+		throw new Error('Unknown error code "'+code+'"');
 
-	this.client = description.client;
-	this.merchant = description.merchant;
+	this.code = blueprint.code;
+	this.message = blueprint.message;
 
-	assign(this, opts);
+	this.client = blueprint.client;
+	this.merchant = blueprint.merchant;
+
+	Object.assign(this, opts);
 }
 
 ProcessingError.prototype = Object.create(Error.prototype);

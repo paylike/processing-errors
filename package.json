@@ -1,9 +1,9 @@
 {
-	"name": "paylike-processing-errors",
-	"private": true,
-	"version": "0.0.1",
-	"dependencies": {
-		"index-by": "^0.0.1",
-		"object-assign": "^4.1.0"
+	"name": "@paylike/processing-errors",
+	"description": "A list of possible transaction processing errors",
+	"version": "1.0.0",
+	"repository": "paylike/processing-errors",
+	"scripts": {
+		"test": "node test"
 	}
 }
