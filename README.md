@@ -5,6 +5,8 @@ processing new transactions either
 [through the API](https://github.com/paylike/api-docs#create-a-transaction) or
 in [the frontend](https://github.com/paylike/sdk).
 
+Read more about [transaction errors here](https://paylike.io/transactions/errors).
+
 
 ```js
 var errors = require('@paylike/processing-errors');
